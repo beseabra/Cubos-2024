@@ -2,16 +2,6 @@
   <v-app-bar app color="primary" :dark="$vuetify.theme.dark">
     <div class="d-flex align-center">
       <v-img
-        v-if="!$vuetify.theme.dark"
-        alt="Vuetify Logo"
-        class="shrink mr-2"
-        contain
-        src="../assets/logo-cubos.svg"
-        transition="scale-transition"
-        width="100"
-      />
-      <v-img
-        v-else
         alt="Vuetify Logo"
         class="shrink mr-2"
         contain
@@ -19,7 +9,7 @@
         transition="scale-transition"
         width="100"
       />
-      <v-text>Movies</v-text>
+      <v-text style="color: white">Movies</v-text>
     </div>
 
     <v-spacer></v-spacer>

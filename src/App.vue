@@ -2,7 +2,12 @@
   <v-app>
     <v-containar class="hero">
       <nav-bar></nav-bar>
-      <v-main>
+      <v-main
+        :class="{
+          'transparent-card': isDarkTheme,
+          'transparent-card-light': !isDarkTheme,
+        }"
+      >
         <router-view />
       </v-main>
       <Footer />
@@ -21,7 +26,11 @@ export default {
     Footer,
     NavBar,
   },
-
+  computed: {
+    isDarkTheme() {
+      return this.$vuetify.theme.dark;
+    },
+  },
   data: () => ({
     //
   }),
@@ -35,5 +44,11 @@ export default {
   background-position: center center;
   background-repeat: no-repeat;
   min-height: 100vh;
+}
+.transparent-card {
+  background: rgba(0, 0, 0);
+}
+.transparent-card-light {
+  background: rgba(255, 255, 255);
 }
 </style>

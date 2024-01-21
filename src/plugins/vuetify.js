@@ -10,14 +10,16 @@ export default new Vuetify({
     dark: false,
     themes: {
       light: {
-        primary: "#EAD5F9",
+        primary: "#402060",
         logo: "#000000",
         backgroundInput: "#EAD5F9",
+        text: "#000000",
       },
       dark: {
         primary: "#000000",
         logo: "#ffffff",
         backgroundInput: "#1a191b",
+        text: "#B5B2BC",
       },
     },
   },

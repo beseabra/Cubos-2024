@@ -16,7 +16,20 @@
             </v-card>
           </v-hover>
         </v-col>
-        <v-col cols="12" sm="8">
+
+        <v-col cols="12" sm="4">
+          <!-- Conteúdo da segunda coluna -->
+          <h1 class="mt-5">{{ this.movie.title }}</h1>
+          <h4 class="subtitle-2" color="text">
+            Título Original: {{ this.movie.original_title }}
+          </h4>
+          <h4 class="subtitle grey--text mt-5">
+            <i>{{ this.movie.overview }}</i>
+          </h4>
+        </v-col>
+
+        <v-col cols="12" sm="4">
+          <!-- Conteúdo da terceira coluna -->
           <h1 class="mt-5">{{ this.movie.title }}</h1>
           <h4 class="subtitle-2 grey--text">
             Título Original: {{ this.movie.original_title }}
@@ -24,22 +37,9 @@
           <h4 class="subtitle grey--text mt-5">
             <i>{{ this.movie.overview }}</i>
           </h4>
-
-          <div class="mt-5">
-            <h2 class="mt-5 grey--text text--darken-3">Featured Cast</h2>
-            <div
-              :key="index"
-              v-for="(crew, index) in movie.credits.crew"
-              class="mt-5"
-            >
-              <div v-if="index < 2" class="">
-                <h3>{{ crew.name }}</h3>
-                <span class="grey--text">{{ crew.job }}</span>
-              </div>
-            </div>
-          </div>
         </v-col>
       </v-row>
+
       <v-row class="mt-10">
         <v-container
           :class="{
