@@ -1,11 +1,21 @@
 <template>
-  <v-app-bar app color="primary" dark>
+  <v-app-bar app color="primary" :dark="$vuetify.theme.dark">
     <div class="d-flex align-center">
       <v-img
+        v-if="!$vuetify.theme.dark"
         alt="Vuetify Logo"
         class="shrink mr-2"
         contain
         src="../assets/logo-cubos.svg"
+        transition="scale-transition"
+        width="100"
+      />
+      <v-img
+        v-else
+        alt="Vuetify Logo"
+        class="shrink mr-2"
+        contain
+        src="../assets/logo-cubos-white.svg"
         transition="scale-transition"
         width="100"
       />
@@ -19,6 +29,7 @@
     </v-btn>
   </v-app-bar>
 </template>
+
 <script>
 export default {
   name: "NavBar",

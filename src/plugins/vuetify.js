@@ -10,12 +10,12 @@ export default new Vuetify({
     dark: false,
     themes: {
       light: {
-        primary: "#2c3e50",
+        primary: "#EAD5F9",
         logo: "#000000",
-        backgroundInput: "#e5e5e5",
+        backgroundInput: "#EAD5F9",
       },
       dark: {
-        primary: "#0000000",
+        primary: "#000000",
         logo: "#ffffff",
         backgroundInput: "#1a191b",
       },

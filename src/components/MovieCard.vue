@@ -7,8 +7,16 @@
       outlined
     >
       <router-link :to="`/movie/${movie.id}`">
-        <v-img :src="podtPath" max-height="250px">
-          <div v-if="hover" class="body-2">
+        <div style="position: relative">
+          <v-img max-height="250px">
+            <img
+              :src="podtPath"
+              :alt="movie.title"
+              @error="handleImageError"
+              style="width: 100%; object-fit: cover"
+            />
+          </v-img>
+          <div v-if="hover" class="body-2 progress-overlay">
             <v-progress-circular
               :value="Math.round(movie.vote_average * 10)"
               :size="116"
@@ -21,7 +29,7 @@
               <div class="inner-circle"></div>
             </v-progress-circular>
           </div>
-        </v-img>
+        </div>
       </router-link>
       <v-card-title>
         <div class="headline">{{ movie.title }}</div>
@@ -71,11 +79,24 @@ export default {
       }
       return "";
     },
+    handleImageError(event) {
+      event.target.src = require("@/assets/cinema.jpg");
+    },
   },
 };
 </script>
 
 <style scoped>
+.progress-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .percentage-text {
   position: absolute;
   top: 50%;
