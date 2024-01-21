@@ -17,7 +17,11 @@
       <v-card-text>
         <div class="body-2">
           {{
-            movie.genre_ids.map((geraId, index) => genretypeName(geraId, index))
+            movie.genre_ids
+              ? movie.genre_ids.map((geraId, index) =>
+                  genretypeName(geraId, index)
+                )
+              : ""
           }}
         </div>
       </v-card-text>
@@ -33,7 +37,7 @@ export default {
       required: true,
     },
     genres: {
-      required: true,
+      required: false,
     },
   },
   computed: {
@@ -43,15 +47,18 @@ export default {
   },
   methods: {
     genretypeName(geraId, index) {
-      for (const item of this.genres) {
-        if (item.id === geraId) {
-          if (this.genres.length - 1 === index) {
-            return item.name;
-          } else {
-            return item.name + ", ";
+      if (Array.isArray(this.genres)) {
+        for (const item of this.genres) {
+          if (item.id === geraId) {
+            if (this.genres.length - 1 === index) {
+              return item.name;
+            } else {
+              return item.name + ", ";
+            }
           }
         }
       }
+      return "";
     },
   },
 };

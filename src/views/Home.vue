@@ -43,18 +43,44 @@
       </v-menu>
     </v-row>
 
-    <PopularMovie />
+    <template v-if="inputValue.trim() !== ''">
+      <SearchMovie :searchResults="results" />
+    </template>
+    <template v-else>
+      <PopularMovie />
+    </template>
   </v-col>
 </template>
 
 <script>
 import PopularMovie from "../components/PopularMovie.vue";
+import SearchMovie from "../components/SearchMovie.vue";
 export default {
   name: "HomeMovies",
   components: {
     PopularMovie,
+    SearchMovie,
   },
   methods: {
+    searchMovies() {
+      const query = this.inputValue.trim();
+      if (!query) {
+        this.results = [];
+        return;
+      }
+
+      this.$http
+        .get(
+          `/search/movie?query=${query}&include_adult=false&language=pt-BR&page=1`
+        )
+        .then((response) => {
+          console.log("Dados recebidos:", response.data);
+          this.results = response.data.results;
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar dados:", error);
+        });
+    },
     clearSelections() {
       this.items.forEach((item) => {
         item.selected = false;
@@ -71,6 +97,17 @@ export default {
       { title: "Click Me 2", selected: false },
     ],
     selectedItems: [],
+    results: [],
   }),
+  watch: {
+    inputValue: function () {
+      if (this.debouncedSearch) {
+        clearTimeout(this.debouncedSearch);
+      }
+      this.debouncedSearch = setTimeout(() => {
+        this.searchMovies();
+      }, 300);
+    },
+  },
 };
 </script>
