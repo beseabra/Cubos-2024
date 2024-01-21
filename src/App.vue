@@ -2,12 +2,7 @@
   <v-app>
     <v-containar class="hero">
       <nav-bar></nav-bar>
-      <v-main
-        :class="{
-          'transparent-card': isDarkTheme,
-          'transparent-card-light': !isDarkTheme,
-        }"
-      >
+      <v-main class="transparent-card">
         <router-view />
       </v-main>
       <Footer />
@@ -26,11 +21,7 @@ export default {
     Footer,
     NavBar,
   },
-  computed: {
-    isDarkTheme() {
-      return this.$vuetify.theme.dark;
-    },
-  },
+  computed: {},
   data: () => ({
     //
   }),

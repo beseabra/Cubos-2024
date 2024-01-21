@@ -47,24 +47,26 @@
 
     <template v-if="inputValue.trim() !== ''">
       <SearchMovie :searchResults="results" />
+      <div class="text-center">
+        <v-pagination
+          v-model="page"
+          :length="totalPages"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          @input="updateResults"
+        ></v-pagination>
+      </div>
     </template>
     <template v-else>
       <PopularMovie />
     </template>
-    <!-- <div class="text-center">
-      <v-pagination
-        v-model="page"
-        :length="4"
-        prev-icon="mdi-menu-left"
-        next-icon="mdi-menu-right"
-      ></v-pagination>
-    </div> -->
   </v-col>
 </template>
 
 <script>
 import PopularMovie from "../components/PopularMovie.vue";
 import SearchMovie from "../components/SearchMovie.vue";
+
 export default {
   name: "HomeMovies",
   components: {
@@ -79,53 +81,72 @@ export default {
     },
   },
   methods: {
-    searchMovies() {
+    searchMovies(page) {
       const query = this.inputValue.trim();
       if (!query) {
         this.results = [];
         return;
       }
 
+      const apiUrl = `/search/movie?query=${query}&include_adult=false&language=pt-BR&page=${page}`;
+
       this.$http
-        .get(
-          `/search/movie?query=${query}&include_adult=false&language=pt-BR&page=1`
-        )
+        .get(apiUrl)
         .then((response) => {
           console.log("Dados recebidos:", response.data);
           this.results = response.data.results;
+
+          // Atualiza o total de páginas após receber os resultados
+          this.totalPages = Math.ceil(response.data.total_results / 5);
         })
         .catch((error) => {
           console.error("Erro ao buscar dados:", error);
         });
     },
+
     clearSelections() {
       this.items.forEach((item) => {
         item.selected = false;
       });
       this.selectedItems = [];
     },
+
+    updateResults() {
+      const itemsPerPage = 10;
+      const apiPage = Math.ceil((this.page * itemsPerPage) / 20);
+
+      this.searchMovies(apiPage);
+    },
   },
-  data: () => ({
-    inputValue: "",
-    page: 1,
-    items: [
-      { title: "Click Me", selected: false },
-      { title: "Click Me", selected: false },
-      { title: "Click Me", selected: false },
-      { title: "Click Me 2", selected: false },
-    ],
-    selectedItems: [],
-    results: [],
-  }),
+
+  data() {
+    return {
+      inputValue: "",
+      page: 1,
+      items: [
+        { title: "Click Me", selected: false },
+        { title: "Click Me", selected: false },
+        { title: "Click Me", selected: false },
+        { title: "Click Me 2", selected: false },
+      ],
+      selectedItems: [],
+      results: [],
+      totalPages: 1,
+    };
+  },
+
   watch: {
-    inputValue: function () {
+    inputValue() {
       if (this.debouncedSearch) {
         clearTimeout(this.debouncedSearch);
       }
       this.debouncedSearch = setTimeout(() => {
-        this.searchMovies();
+        this.page = 1;
+        this.updateResults();
       }, 300);
     },
+
+    page: "updateResults",
   },
 };
 </script>
