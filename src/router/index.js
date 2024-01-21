@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Description from "../views/Description.vue";
+import MovieDetail from "../views/MovieDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -12,15 +12,14 @@ const routes = [
     component: Home,
   },
   {
-    // path: "/edit/:id",
-    path: "/description",
-    name: "Description",
-
-    component: Description,
+    path: "/movie/:id",
+    name: "Home",
+    component: MovieDetail,
   },
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes,
 });
 

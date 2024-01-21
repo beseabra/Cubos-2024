@@ -5,9 +5,11 @@
         v-model="inputValue"
         placeholder="Pesquise por filmes"
         append-icon="mdi-magnify"
+        :style="{ background: getBackgroundColor }"
+        style="height: 40px"
         outlined
         dense
-      ></v-text-field>
+      />
 
       <v-menu>
         <template v-slot:activator="{ on }">
@@ -49,6 +51,14 @@
     <template v-else>
       <PopularMovie />
     </template>
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="4"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+      ></v-pagination>
+    </div>
   </v-col>
 </template>
 
@@ -60,6 +70,13 @@ export default {
   components: {
     PopularMovie,
     SearchMovie,
+  },
+  computed: {
+    getBackgroundColor() {
+      return this.$vuetify.theme.dark
+        ? this.$vuetify.theme.themes.dark.backgroundInput
+        : this.$vuetify.theme.themes.light.backgroundInput;
+    },
   },
   methods: {
     searchMovies() {
@@ -90,6 +107,7 @@ export default {
   },
   data: () => ({
     inputValue: "",
+    page: 1,
     items: [
       { title: "Click Me", selected: false },
       { title: "Click Me", selected: false },

@@ -3,7 +3,7 @@
     <v-containar class="hero">
       <nav-bar></nav-bar>
       <v-main>
-        <Home />
+        <router-view />
       </v-main>
       <Footer />
     </v-containar>
@@ -13,7 +13,6 @@
 <script>
 import NavBar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
-import Home from "./views/Home.vue";
 
 export default {
   name: "App",
@@ -21,7 +20,6 @@ export default {
   components: {
     Footer,
     NavBar,
-    Home,
   },
 
   data: () => ({

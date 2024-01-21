@@ -6,10 +6,25 @@
       max-width="270"
       outlined
     >
-      <v-img :src="podtPath" max-height="250px" />
+      <router-link :to="`/movie/${movie.id}`">
+        <v-img :src="podtPath" max-height="250px">
+          <div v-if="hover" class="body-2">
+            <v-progress-circular
+              :value="Math.round(movie.vote_average * 10)"
+              :size="116"
+              :width="12"
+              color="lime"
+            >
+              <div class="percentage-text">
+                {{ Math.round(movie.vote_average * 10) }}%
+              </div>
+              <div class="inner-circle"></div>
+            </v-progress-circular>
+          </div>
+        </v-img>
+      </router-link>
       <v-card-title>
         <div class="headline">{{ movie.title }}</div>
-        <div class="body-2">{{ Math.round(movie.vote_average * 10) }}%</div>
       </v-card-title>
       <v-card-subtitle>
         <div class="body-2">{{ movie.release_date }}</div>
@@ -18,9 +33,9 @@
         <div class="body-2">
           {{
             movie.genre_ids
-              ? movie.genre_ids.map((geraId, index) =>
-                  genretypeName(geraId, index)
-                )
+              ? movie.genre_ids
+                  .map((genreId, index) => genretypeName(genreId, index))
+                  .join(", ")
               : ""
           }}
         </div>
@@ -46,15 +61,11 @@ export default {
     },
   },
   methods: {
-    genretypeName(geraId, index) {
+    genretypeName(genreId) {
       if (Array.isArray(this.genres)) {
         for (const item of this.genres) {
-          if (item.id === geraId) {
-            if (this.genres.length - 1 === index) {
-              return item.name;
-            } else {
-              return item.name + ", ";
-            }
+          if (item.id === genreId) {
+            return item.name;
           }
         }
       }
@@ -63,3 +74,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.percentage-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: rgb(208, 255, 0);
+}
+.inner-circle {
+  width: 91px;
+  height: 91px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+</style>
