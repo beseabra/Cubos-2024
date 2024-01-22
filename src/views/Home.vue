@@ -110,7 +110,6 @@ export default {
             10 + initialValue
           );
 
-          // Atualiza o total de páginas após receber os resultados
           this.totalPages = Math.ceil(response.data.total_results / 5);
         })
         .catch((error) => {
