@@ -7,7 +7,7 @@ Vue.prototype.$http = api;
 
 export default new Vuetify({
   theme: {
-    dark: false,
+    dark: true,
     themes: {
       light: {
         primary: "#402060",
