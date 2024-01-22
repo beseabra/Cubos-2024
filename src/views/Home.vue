@@ -34,7 +34,7 @@
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list-item-group>
-          <v-row class="justify-center">
+          <v-row class="justify-center mt-3">
             <v-btn
               icon
               class="rounded"
@@ -163,7 +163,7 @@ export default {
       genres: [],
       showCheckboxes: false,
       items: [
-        { title: "Filmes Adultos", selected: false, value: true },
+        { title: "Filmes +18", selected: false, value: true },
         { title: "2022", selected: false, value: "2023" },
         { title: "2023", selected: false, value: "2022" },
       ],
