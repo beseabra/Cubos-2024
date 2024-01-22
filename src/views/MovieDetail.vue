@@ -6,6 +6,7 @@
           'transparent-card': isDarkTheme,
           'transparent-card-light': !isDarkTheme,
         }"
+        class="mt-1"
       >
         <v-col cols="12" sm="4">
           <v-hover v-slot="{ hover }" open-delay="200">
@@ -17,26 +18,68 @@
           </v-hover>
         </v-col>
 
-        <v-col cols="12" sm="4">
-          <!-- Conteúdo da segunda coluna -->
-          <h1 class="mt-5">{{ this.movie.title }}</h1>
-          <h4 class="subtitle-2" color="text">
-            Título Original: {{ this.movie.original_title }}
-          </h4>
-          <h4 class="subtitle grey--text mt-5">
-            <i>{{ this.movie.overview }}</i>
-          </h4>
+        <v-col
+          cols="12"
+          sm="4"
+          style="
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          "
+        >
+          <div>
+            <h1 class="mt-5">{{ this.movie.title }}</h1>
+            <h4 class="subtitle-2" color="text">
+              Título Original: {{ this.movie.original_title }}
+            </h4>
+            <h4 class="subtitle grey--text mt-5">
+              <h3 class="pl-1 mb-2">SINOPSE</h3>
+              <span>
+                <i>{{ this.movie.overview }}</i>
+              </span>
+            </h4>
+          </div>
+          <div
+            class="subtitle-2 grey--text mb-5 mt-5 pt-5 pb-5 pl-2 pr-5"
+            style="
+              background-color: rgba(35, 34, 37, 0.6);
+              white-space: nowrap;
+              display: inline-block;
+              max-width: fit-content;
+            "
+          >
+            <h3 class="pl-1 mb-2">Gêneros:</h3>
+            <span
+              v-for="(item, index) in movie.genres"
+              :key="index"
+              class="ml-1"
+              style="
+                background-color: rgba(193, 80, 255, 0.18);
+                padding: 5px;
+                white-space: nowrap;
+                display: inline-block;
+              "
+            >
+              {{ item.name }}
+              <span v-if="movie.genres.length - 1 !== index" />
+            </span>
+          </div>
         </v-col>
 
-        <v-col cols="12" sm="4">
-          <!-- Conteúdo da terceira coluna -->
-          <h1 class="mt-5">{{ this.movie.title }}</h1>
-          <h4 class="subtitle-2 grey--text">
-            Título Original: {{ this.movie.original_title }}
-          </h4>
-          <h4 class="subtitle grey--text mt-5">
-            <i>{{ this.movie.overview }}</i>
-          </h4>
+        <v-col cols="12" sm="4" class="align-right">
+          <v-progress-circular
+            :value="Math.round(movie.vote_average * 10)"
+            :size="116"
+            :width="12"
+            :color="isDarkTheme ? 'lime' : 'primary'"
+            class="progress-circle"
+          >
+            <div class="inner-circle">
+              <div class="percentage-text">
+                {{ Math.round(movie.vote_average * 10) }}%
+              </div>
+            </div>
+          </v-progress-circular>
         </v-col>
       </v-row>
 
@@ -153,5 +196,9 @@ export default {
 }
 .transparent-card-light {
   background: rgba(255, 255, 255, 0.5);
+}
+.align-right {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

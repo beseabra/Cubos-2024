@@ -40,22 +40,19 @@
               </v-card-text>
             </div>
 
-            <div v-if="hover" class="body-2 progress-overlay">
+            <div v-if="hover && isDesktop" class="body-2 progress-overlay">
               <v-progress-circular
                 :value="Math.round(movie.vote_average * 10)"
                 :size="116"
                 :width="12"
                 color="lime"
-                style="
-                  position: absolute;
-
-                  transform: translate(120%, -300%);
-                "
+                class="progress-circle"
               >
-                <div class="percentage-text">
-                  {{ Math.round(movie.vote_average * 10) }}%
+                <div class="inner-circle">
+                  <div class="percentage-text">
+                    {{ Math.round(movie.vote_average * 10) }}%
+                  </div>
                 </div>
-                <div class="inner-circle"></div>
               </v-progress-circular>
             </div>
           </v-img>
@@ -79,6 +76,9 @@ export default {
   computed: {
     podtPath() {
       return "https://image.tmdb.org/t/p/w300" + this.movie.poster_path;
+    },
+    isDesktop() {
+      return window.innerWidth >= 1024;
     },
   },
   methods: {
@@ -119,11 +119,22 @@ export default {
   padding: 0.5rem 1rem 0.5rem 1;
 }
 
-.percentage-text {
+.progress-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.progress-circle {
+  position: relative;
+}
+
+.percentage-text {
   font-size: 20px;
   color: rgb(208, 255, 0);
 }
@@ -133,5 +144,8 @@ export default {
   height: 91px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
