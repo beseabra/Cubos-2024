@@ -21,34 +21,32 @@
         <v-icon>mdi mdi-tune-vertical</v-icon>
       </v-btn>
     </v-row>
-
-    <v-row
-      class="d-flex justify-center mt-5"
-      v-if="showCheckboxes"
-      style="flex-wrap: wrap"
-    >
-      <v-list class="d-flex">
-        <v-list-item-group v-model="selectedItems" class="d-flex">
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-action>
+    <v-row class="justify-center">
+      <v-list
+        class="d-flex mt-5"
+        v-if="showCheckboxes"
+        style="max-width: 500px; justify-content: center"
+      >
+        <v-col>
+          <v-list-item-group v-model="selectedItems" class="d-flex">
+            <v-list-item v-for="(item, i) in items" :key="i">
               <v-checkbox v-model="item.selected"></v-checkbox>
-            </v-list-item-action>
-            <v-list-item-content>
+
               <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-        <v-list-item>
-          <v-btn
-            icon
-            class="rounded"
-            style="min-width: 200px"
-            :class="cardButtonClasses"
-            @click="clearSelections"
-          >
-            Limpar Seleções
-          </v-btn>
-        </v-list-item>
+            </v-list-item>
+          </v-list-item-group>
+          <v-row class="justify-center">
+            <v-btn
+              icon
+              class="rounded"
+              style="min-width: 200px"
+              :class="cardButtonClasses"
+              @click="clearSelections"
+            >
+              Limpar Seleções
+            </v-btn>
+          </v-row>
+        </v-col>
       </v-list>
     </v-row>
 
@@ -103,6 +101,17 @@ export default {
         "transparent-button-light": !this.isDarkTheme,
       };
     },
+    includeAdultParam() {
+      return this.items.some((item) => item.selected && item.value === true);
+    },
+
+    yearParam() {
+      const selectedYears = this.items
+        .filter((item) => item.selected && item.value)
+        .map((item) => item.value);
+
+      return selectedYears.length > 0 ? selectedYears.join(",") : null;
+    },
   },
   methods: {
     toggleCheckboxes() {
@@ -115,7 +124,11 @@ export default {
         return;
       }
 
-      const apiUrl = `/search/movie?query=${query}&include_adult=false&language=pt-BR&page=${page}`;
+      const apiUrl = `/search/movie?query=${query}&include_adult=${
+        this.includeAdultParam
+      }&language=pt-BR&page=${page}${
+        this.yearParam ? `&year=${this.yearParam}` : ""
+      }`;
 
       this.$http
         .get(apiUrl)
@@ -156,10 +169,9 @@ export default {
       genres: [],
       showCheckboxes: false,
       items: [
-        { title: "Click Me", selected: false },
-        { title: "Click Me", selected: false },
-        { title: "Click Me", selected: false },
-        { title: "Click Me 2", selected: false },
+        { title: "Filmes Adultos", selected: false, value: true },
+        { title: "Estreia 2023", selected: false, value: "2023" },
+        { title: "Estreia 2022", selected: false, value: "2022" },
       ],
       selectedItems: [],
       results: [],
