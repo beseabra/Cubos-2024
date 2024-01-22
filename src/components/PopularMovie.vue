@@ -1,19 +1,14 @@
 <template>
-  <v-col>
-    <v-row
-      style="margin-left: 100px; margin-right: 100px; margin-top: 10px"
-      :class="{
-        'transparent-card': isDarkTheme,
-        'transparent-card-light': !isDarkTheme,
-      }"
-    >
+  <div style="margin: 1rem">
+    <v-row>
       <v-col
         v-for="movie in paginatedMovies"
         :key="movie.id"
-        cols="12"
+        cols="6"
         sm="5"
         md="4"
         lg="3"
+        xl="2"
       >
         <MovieCard :movie="movie" :genres="genres" />
       </v-col>
@@ -28,7 +23,7 @@
         class="mt-5"
       ></v-pagination>
     </div>
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -64,12 +59,16 @@ export default {
   methods: {
     async fetchGenres() {
       try {
-        const response = await this.$http.get("/genre/movie/list");
+        const response = await this.$http.get(
+          "/genre/movie/list?language=pt",
+          {}
+        );
         this.genres = response.data.genres;
       } catch (error) {
         console.log(error);
       }
     },
+
     async fetchPopularMovies() {
       try {
         const response = await this.$http.get("/movie/popular");
@@ -82,11 +81,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.transparent-card {
-  background: rgba(0, 0, 0, 0.5);
-}
-.transparent-card-light {
-  background: rgba(255, 255, 255, 0.5);
-}
-</style>
+<style scoped></style>

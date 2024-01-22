@@ -1,54 +1,67 @@
 <template>
   <v-hover v-slot="{ hover }" open-delay="200">
-    <v-card
+    <div
       :elevation="hover ? 12 : 2"
-      class="mx-auto"
       max-width="270"
+      max-height="340"
+      class="mx-auto"
       outlined
+      style="position: relative"
     >
       <router-link :to="`/movie/${movie.id}`">
         <div style="position: relative">
-          <v-img max-height="250px">
+          <v-img max-height="550">
             <img
               :src="podtPath"
               :alt="movie.title"
               @error="handleImageError"
               style="width: 100%; object-fit: cover"
             />
-          </v-img>
-          <div v-if="hover" class="body-2 progress-overlay">
-            <v-progress-circular
-              :value="Math.round(movie.vote_average * 10)"
-              :size="116"
-              :width="12"
-              color="lime"
+            <div
+              class="card-title-container"
+              :class="{ hovered: hover }"
+              :style="{ height: hover ? '100px' : '80px' }"
             >
-              <div class="percentage-text">
-                {{ Math.round(movie.vote_average * 10) }}%
-              </div>
-              <div class="inner-circle"></div>
-            </v-progress-circular>
-          </div>
+              <v-card-title>
+                <div class="headline">{{ movie.title }}</div>
+              </v-card-title>
+              <v-card-text>
+                <div class="body-2" :style="{ opacity: hover ? 1 : 0 }">
+                  {{
+                    movie.genre_ids
+                      ? movie.genre_ids
+                          .map((genreId, index) =>
+                            genretypeName(genreId, index)
+                          )
+                          .join(", ")
+                      : ""
+                  }}
+                </div>
+              </v-card-text>
+            </div>
+
+            <div v-if="hover" class="body-2 progress-overlay">
+              <v-progress-circular
+                :value="Math.round(movie.vote_average * 10)"
+                :size="116"
+                :width="12"
+                color="lime"
+                style="
+                  position: absolute;
+
+                  transform: translate(120%, -300%);
+                "
+              >
+                <div class="percentage-text">
+                  {{ Math.round(movie.vote_average * 10) }}%
+                </div>
+                <div class="inner-circle"></div>
+              </v-progress-circular>
+            </div>
+          </v-img>
         </div>
       </router-link>
-      <v-card-title>
-        <div class="headline">{{ movie.title }}</div>
-      </v-card-title>
-      <v-card-subtitle>
-        <div class="body-2">{{ movie.release_date }}</div>
-      </v-card-subtitle>
-      <v-card-text>
-        <div class="body-2">
-          {{
-            movie.genre_ids
-              ? movie.genre_ids
-                  .map((genreId, index) => genretypeName(genreId, index))
-                  .join(", ")
-              : ""
-          }}
-        </div>
-      </v-card-text>
-    </v-card>
+    </div>
   </v-hover>
 </template>
 
@@ -65,7 +78,7 @@ export default {
   },
   computed: {
     podtPath() {
-      return "https://image.tmdb.org/t/p/w500" + this.movie.poster_path;
+      return "https://image.tmdb.org/t/p/w300" + this.movie.poster_path;
     },
   },
   methods: {
@@ -87,16 +100,25 @@ export default {
 </script>
 
 <style scoped>
-.progress-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card-container {
+  overflow: hidden;
 }
+
+.card-title-container {
+  transition: transform 0.3s;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.9)
+  );
+  width: 100%;
+  height: 70px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.5rem 1rem 0.5rem 1;
+}
+
 .percentage-text {
   position: absolute;
   top: 50%;
@@ -105,6 +127,7 @@ export default {
   font-size: 20px;
   color: rgb(208, 255, 0);
 }
+
 .inner-circle {
   width: 91px;
   height: 91px;

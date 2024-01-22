@@ -1,5 +1,5 @@
 <template>
-  <v-col class="mb-5" cols="12">
+  <v-col class="mb-5 m-1" cols="12">
     <v-row style="padding-left: 60px; padding-right: 60px; margin-top: 10px">
       <v-text-field
         v-model="inputValue"
@@ -45,21 +45,29 @@
       </v-menu>
     </v-row>
 
-    <template v-if="inputValue.trim() !== ''">
-      <SearchMovie :searchResults="results" :genres="genres" />
-      <div class="text-center">
-        <v-pagination
-          v-model="page"
-          :length="totalPages"
-          prev-icon="mdi-menu-left"
-          next-icon="mdi-menu-right"
-          @input="updateResults"
-        ></v-pagination>
-      </div>
-    </template>
-    <template v-else>
-      <PopularMovie />
-    </template>
+    <v-col
+      :class="{
+        'transparent-card': isDarkTheme,
+        'transparent-card-light': !isDarkTheme,
+      }"
+      style="margin-top: 20px"
+    >
+      <template v-if="inputValue.trim() !== ''">
+        <SearchMovie :searchResults="results" />
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="totalPages"
+            prev-icon="mdi-menu-left"
+            next-icon="mdi-menu-right"
+            @input="updateResults"
+          ></v-pagination>
+        </div>
+      </template>
+      <template v-else>
+        <PopularMovie />
+      </template>
+    </v-col>
   </v-col>
 </template>
 
@@ -78,6 +86,9 @@ export default {
       return this.$vuetify.theme.dark
         ? this.$vuetify.theme.themes.dark.backgroundInput
         : this.$vuetify.theme.themes.light.backgroundInput;
+    },
+    isDarkTheme() {
+      return this.$vuetify.theme.dark;
     },
   },
   methods: {
@@ -155,3 +166,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.transparent-card {
+  background: rgba(0, 0, 0, 0.5);
+}
+.transparent-card-light {
+  background: rgba(255, 255, 255, 0.5);
+}
+</style>
