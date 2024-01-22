@@ -17,7 +17,11 @@
             />
             <div
               class="card-title-container"
-              :class="{ hovered: hover }"
+              :class="{
+                hovered: hover,
+                'card-title-container': isDarkTheme,
+                'card-title-light': !isDarkTheme,
+              }"
               :style="{ height: hover ? '100px' : '80px' }"
             >
               <v-card-title>
@@ -81,12 +85,15 @@ export default {
       return window.innerWidth >= 1024;
     },
     truncatedTitle() {
-      const maxWords = 3; // Defina o número máximo de palavras desejado
+      const maxWords = 3;
       const words = this.movie.title.split(" ");
       if (words.length > maxWords) {
         return words.slice(0, maxWords).join(" ") + "...";
       }
       return this.movie.title;
+    },
+    isDarkTheme() {
+      return this.$vuetify.theme.dark;
     },
   },
   methods: {
@@ -118,8 +125,22 @@ export default {
   transition: transform 0.3s;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 0, 0.9)
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  width: 100%;
+  height: 70px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.5rem 1rem 0.5rem 1;
+}
+.card-title-light {
+  transition: transform 0.3s;
+  background: linear-gradient(
+    to bottom,
+    rgba(143, 137, 137, 0.6),
+    rgba(196, 186, 186, 0.9) 100%
   );
   width: 100%;
   height: 70px;

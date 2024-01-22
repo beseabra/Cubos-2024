@@ -6,7 +6,7 @@
         placeholder="Pesquise por filmes"
         append-icon="mdi-magnify"
         :style="{ background: getBackgroundColor }"
-        style="height: 40px; max-width: 60%"
+        class="search-field"
         outlined
         dense
       />
@@ -15,12 +15,12 @@
         icon
         v-on="on"
         :class="cardButtonClasses"
-        class="rounded"
         @click="toggleCheckboxes"
       >
         <v-icon>mdi mdi-tune-vertical</v-icon>
       </v-btn>
     </v-row>
+
     <v-row class="justify-center">
       <v-list
         class="d-flex mt-5"
@@ -31,7 +31,6 @@
           <v-list-item-group v-model="selectedItems" class="d-flex">
             <v-list-item v-for="(item, i) in items" :key="i">
               <v-checkbox v-model="item.selected"></v-checkbox>
-
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list-item-group>
@@ -97,14 +96,13 @@ export default {
     },
     cardButtonClasses() {
       return {
-        " transparent-button ": this.isDarkTheme,
+        "transparent-button": this.isDarkTheme,
         "transparent-button-light": !this.isDarkTheme,
       };
     },
     includeAdultParam() {
       return this.items.some((item) => item.selected && item.value === true);
     },
-
     yearParam() {
       const selectedYears = this.items
         .filter((item) => item.selected && item.value)
@@ -144,14 +142,12 @@ export default {
           console.error("Erro ao buscar dados:", error);
         });
     },
-
     clearSelections() {
       this.items.forEach((item) => {
         item.selected = false;
       });
       this.selectedItems = [];
     },
-
     updateResults() {
       const itemsPerPage = 10;
       const division = (this.page * itemsPerPage) / 20;
@@ -160,7 +156,6 @@ export default {
       this.searchMovies(apiPage, initialValue);
     },
   },
-
   data() {
     return {
       inputValue: "",
@@ -177,7 +172,6 @@ export default {
       totalPages: 1,
     };
   },
-
   watch: {
     inputValue() {
       if (this.debouncedSearch) {
@@ -188,16 +182,21 @@ export default {
         this.updateResults();
       }, 300);
     },
-
     page: "updateResults",
   },
 };
 </script>
 
-<style>
+<style scoped>
+.search-field {
+  height: 40px;
+  max-width: 60%;
+}
+
 .transparent-card {
   background: rgba(0, 0, 0, 0.5);
 }
+
 .transparent-card-light {
   background: rgba(255, 255, 255, 0.5);
 }
@@ -206,6 +205,7 @@ export default {
   background: rgba(128, 0, 128, 0.5);
   margin-left: 1rem;
 }
+
 .transparent-button-light {
   background: rgba(172, 148, 226, 0.5);
   margin-left: 1rem;
