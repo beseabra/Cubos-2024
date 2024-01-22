@@ -447,7 +447,6 @@ export default {
       return languageTranslations[languageCode] || languageCode;
     },
     translateStatus(status) {
-      // Lógica de tradução de status, substitua pelo necessário
       const statusTranslations = {
         Released: "Lançado",
         Rumored: "Rumor",
@@ -456,8 +455,6 @@ export default {
         InProduction: "Em produção",
         Canceled: "Cancelado",
         "": "Desconhecido",
-
-        // Adicione mais traduções conforme necessário
       };
       return statusTranslations[status] || status;
     },

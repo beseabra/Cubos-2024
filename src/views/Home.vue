@@ -1,57 +1,58 @@
 <template>
-  <v-col class="mb-5 m-1" cols="12">
-    <v-row style="padding-left: 60px; padding-right: 60px; margin-top: 10px">
+  <v-col class="mb-5 mt-2" cols="12">
+    <v-row class="d-flex justify-center align-center">
       <v-text-field
         v-model="inputValue"
         placeholder="Pesquise por filmes"
         append-icon="mdi-magnify"
         :style="{ background: getBackgroundColor }"
-        style="height: 40px"
+        style="height: 40px; max-width: 60%"
         outlined
         dense
       />
 
-      <v-menu>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item-group v-model="selectedItems">
-            <v-list-item v-for="(item, i) in items" :key="i">
-              <v-list-item-action>
-                <v-checkbox v-model="item.selected"></v-checkbox>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-
-        <v-divider></v-divider>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-btn @click="clearSelections">Limpar Seleções</v-btn>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <v-btn
+        icon
+        v-on="on"
+        :class="cardButtonClasses"
+        class="rounded"
+        @click="toggleCheckboxes"
+      >
+        <v-icon>mdi mdi-tune-vertical</v-icon>
+      </v-btn>
     </v-row>
 
-    <v-col
-      :class="{
-        'transparent-card': isDarkTheme,
-        'transparent-card-light': !isDarkTheme,
-      }"
-      style="margin-top: 20px"
+    <v-row
+      class="d-flex justify-center mt-5"
+      v-if="showCheckboxes"
+      style="flex-wrap: wrap"
     >
+      <v-list class="d-flex">
+        <v-list-item-group v-model="selectedItems" class="d-flex">
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-action>
+              <v-checkbox v-model="item.selected"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        <v-list-item>
+          <v-btn
+            icon
+            class="rounded"
+            style="min-width: 200px"
+            :class="cardButtonClasses"
+            @click="clearSelections"
+          >
+            Limpar Seleções
+          </v-btn>
+        </v-list-item>
+      </v-list>
+    </v-row>
+
+    <v-col :class="cardClasses" style="margin-top: 20px">
       <template v-if="inputValue.trim() !== ''">
         <SearchMovie :searchResults="results" />
         <div class="text-center">
@@ -90,8 +91,23 @@ export default {
     isDarkTheme() {
       return this.$vuetify.theme.dark;
     },
+    cardClasses() {
+      return {
+        "transparent-card": this.isDarkTheme,
+        "transparent-card-light": !this.isDarkTheme,
+      };
+    },
+    cardButtonClasses() {
+      return {
+        " transparent-button ": this.isDarkTheme,
+        "transparent-button-light": !this.isDarkTheme,
+      };
+    },
   },
   methods: {
+    toggleCheckboxes() {
+      this.showCheckboxes = !this.showCheckboxes;
+    },
     searchMovies(page, initialValue) {
       const query = this.inputValue.trim();
       if (!query) {
@@ -138,6 +154,7 @@ export default {
       inputValue: "",
       page: 1,
       genres: [],
+      showCheckboxes: false,
       items: [
         { title: "Click Me", selected: false },
         { title: "Click Me", selected: false },
@@ -172,5 +189,14 @@ export default {
 }
 .transparent-card-light {
   background: rgba(255, 255, 255, 0.5);
+}
+
+.transparent-button {
+  background: rgba(128, 0, 128, 0.5);
+  margin-left: 1rem;
+}
+.transparent-button-light {
+  background: rgba(172, 148, 226, 0.5);
+  margin-left: 1rem;
 }
 </style>
