@@ -46,7 +46,7 @@
     </v-row>
 
     <template v-if="inputValue.trim() !== ''">
-      <SearchMovie :searchResults="results" />
+      <SearchMovie :searchResults="results" :genres="genres" />
       <div class="text-center">
         <v-pagination
           v-model="page"
@@ -81,7 +81,7 @@ export default {
     },
   },
   methods: {
-    searchMovies(page) {
+    searchMovies(page, initialValue) {
       const query = this.inputValue.trim();
       if (!query) {
         this.results = [];
@@ -94,7 +94,10 @@ export default {
         .get(apiUrl)
         .then((response) => {
           console.log("Dados recebidos:", response.data);
-          this.results = response.data.results;
+          this.results = response.data.results.slice(
+            initialValue,
+            10 + initialValue
+          );
 
           // Atualiza o total de páginas após receber os resultados
           this.totalPages = Math.ceil(response.data.total_results / 5);
@@ -113,9 +116,10 @@ export default {
 
     updateResults() {
       const itemsPerPage = 10;
-      const apiPage = Math.ceil((this.page * itemsPerPage) / 20);
-
-      this.searchMovies(apiPage);
+      const division = (this.page * itemsPerPage) / 20;
+      const apiPage = Math.ceil(division);
+      const initialValue = division === apiPage ? 10 : 0;
+      this.searchMovies(apiPage, initialValue);
     },
   },
 
@@ -123,6 +127,7 @@ export default {
     return {
       inputValue: "",
       page: 1,
+      genres: [],
       items: [
         { title: "Click Me", selected: false },
         { title: "Click Me", selected: false },
