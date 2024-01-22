@@ -170,8 +170,8 @@ export default {
       showCheckboxes: false,
       items: [
         { title: "Filmes Adultos", selected: false, value: true },
-        { title: "Estreia 2023", selected: false, value: "2023" },
-        { title: "Estreia 2022", selected: false, value: "2022" },
+        { title: "2022", selected: false, value: "2023" },
+        { title: "2023", selected: false, value: "2022" },
       ],
       selectedItems: [],
       results: [],
