@@ -21,6 +21,7 @@
         next-icon="mdi-menu-right"
         :items-per-page="10"
         class="mt-5"
+        @input="changePage"
       ></v-pagination>
     </div>
   </div>
@@ -76,6 +77,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    changePage() {
+      window.scrollTo(0, 0);
     },
   },
 };

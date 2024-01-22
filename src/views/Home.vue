@@ -154,6 +154,7 @@ export default {
       const apiPage = Math.ceil(division);
       const initialValue = division === apiPage ? 10 : 0;
       this.searchMovies(apiPage, initialValue);
+      window.scrollTo(0, 0);
     },
   },
   data() {
