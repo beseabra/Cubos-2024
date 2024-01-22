@@ -133,7 +133,6 @@ export default {
       this.$http
         .get(apiUrl)
         .then((response) => {
-          console.log("Dados recebidos:", response.data);
           this.results = response.data.results.slice(
             initialValue,
             10 + initialValue

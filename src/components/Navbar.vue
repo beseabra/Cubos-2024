@@ -7,9 +7,9 @@
         contain
         src="../assets/logo-cubos-white.svg"
         transition="scale-transition"
-        width="100"
+        width="150"
       />
-      <v-text style="color: white">Movies</v-text>
+      <router-link to="/" tag="span" style="color: white">Movies</router-link>
     </div>
 
     <v-spacer></v-spacer>
