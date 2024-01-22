@@ -3,10 +3,11 @@
     <v-col
       v-for="movie in searchResults"
       :key="movie.id"
-      cols="12"
+      cols="6"
       sm="5"
       md="4"
       lg="3"
+      xl="2"
     >
       <MovieCard :movie="movie" :genres="genres" />
     </v-col>

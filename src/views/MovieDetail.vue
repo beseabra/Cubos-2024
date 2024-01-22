@@ -1,13 +1,7 @@
 <template>
   <div>
     <v-container>
-      <v-row
-        :class="{
-          'transparent-card': isDarkTheme,
-          'transparent-card-light': !isDarkTheme,
-        }"
-        class="mt-1"
-      >
+      <v-row :class="cardClasses" class="mt-1">
         <v-col cols="12" sm="4">
           <v-hover v-slot="{ hover }" open-delay="200">
             <v-card :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
@@ -48,13 +42,7 @@
             >
               Título Original: {{ movie.original_title }}
             </h4>
-            <div
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
-              class="mb-5 mt-5 pt-4 pb-5 pl-2 pr-5"
-            >
+            <div :class="cardClasses" class="mb-5 mt-5 pt-4 pb-5 pl-2 pr-5">
               <h3
                 class="pl-1 mb-2 mt-5"
                 :style="{
@@ -83,10 +71,7 @@
               display: inline-block;
               max-width: fit-content;
             "
-            :class="{
-              'transparent-card': isDarkTheme,
-              'transparent-card-light': !isDarkTheme,
-            }"
+            :class="cardClasses"
           >
             <h3 class="pl-1 mb-2" color=" subtext">Gêneros:</h3>
             <span
@@ -115,10 +100,7 @@
                 display: inline-block;
                 max-width: fit-content;
               "
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3 class="pl-1" color=" subtext">POPULARIDADE</h3>
               <span class="pl-1">
@@ -132,10 +114,7 @@
                 display: inline-block;
                 max-width: fit-content;
               "
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3 class="pl-1 mb-2" color=" subtext">VOTOS</h3>
               <span class="pl-1">
@@ -160,10 +139,7 @@
           <v-row class="alignItens d-flex">
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -176,15 +152,12 @@
                 LANÇAMENTO
               </h3>
               <span style="padding: 5px">
-                {{ movie.release_date }}
+                {{ formatDate(movie.release_date) }}
               </span>
             </div>
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -197,17 +170,14 @@
                 DURAÇÃO
               </h3>
               <span style="padding: 5px">
-                {{ movie.runtime }}
+                {{ formatDuration(movie.runtime) }}
               </span>
             </div>
           </v-row>
           <v-row class="alignItens d-flex">
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -220,15 +190,12 @@
                 SITUAÇÃO
               </h3>
               <span style="padding: 5px">
-                {{ movie.status }}
+                {{ translateStatus(movie.status) }}
               </span>
             </div>
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -241,17 +208,14 @@
                 IDIOMA
               </h3>
               <span style="padding: 5px">
-                {{ movie.original_language }}
+                {{ translateLanguage(movie.original_language) }}
               </span>
             </div>
           </v-row>
           <v-row class="alignItens d-flex">
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -264,15 +228,12 @@
                 ORÇAMENTO
               </h3>
               <span style="padding: 5px">
-                {{ movie.budget }}
+                ${{ formatCurrencyAbbr(movie.budget) }}
               </span>
             </div>
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -285,15 +246,12 @@
                 RECEITA
               </h3>
               <span style="padding: 5px">
-                {{ movie.revenue }}
+                ${{ formatCurrencyAbbr(movie.revenue) }}
               </span>
             </div>
             <div
               class="subtitle-2 pt-1 pb-1 pl-2 pr-5 flex"
-              :class="{
-                'transparent-card': isDarkTheme,
-                'transparent-card-light': !isDarkTheme,
-              }"
+              :class="cardClasses"
             >
               <h3
                 class="pl-1"
@@ -306,7 +264,7 @@
                 LUCRO
               </h3>
               <span style="padding: 5px">
-                {{ movie.revenue - movie.budget }}
+                ${{ formatCurrencyAbbr(movie.revenue - movie.budget) }}
               </span>
             </div>
           </v-row>
@@ -314,12 +272,7 @@
       </v-row>
 
       <v-row class="mt-10">
-        <v-container
-          :class="{
-            'transparent-card': isDarkTheme,
-            'transparent-card-light': !isDarkTheme,
-          }"
-        >
+        <v-container :class="cardClasses">
           <v-row>
             <v-col cols="12">
               <v-card-title>
@@ -383,6 +336,12 @@ export default {
     isDarkTheme() {
       return this.$vuetify.theme.dark;
     },
+    cardClasses() {
+      return {
+        "transparent-card": this.isDarkTheme,
+        "transparent-card-light": !this.isDarkTheme,
+      };
+    },
   },
   methods: {
     async fetchMovie(movieId) {
@@ -401,6 +360,106 @@ export default {
       } else {
         this.isVideo = false;
       }
+    },
+    formatDate(dateString) {
+      const options = { day: "numeric", month: "numeric", year: "numeric" };
+      const formattedDate = new Date(dateString).toLocaleDateString(
+        "pt-BR",
+        options
+      );
+      return formattedDate;
+    },
+    formatDuration(minutes) {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours}h ${remainingMinutes}min`;
+    },
+    formatCurrency(value) {
+      return value
+        ? value.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        : "";
+    },
+    formatCurrencyAbbr(value) {
+      const trillion = 1e12;
+      const billion = 1e9;
+      const million = 1e6;
+      const thousand = 1e3;
+
+      if (Math.abs(value) >= trillion) {
+        return (
+          (value / trillion).toLocaleString("en-US", {
+            maximumFractionDigits: 1,
+          }) + "T"
+        );
+      } else if (Math.abs(value) >= billion) {
+        return (
+          (value / billion).toLocaleString("en-US", {
+            maximumFractionDigits: 1,
+          }) + "B"
+        );
+      } else if (Math.abs(value) >= million) {
+        return (
+          (value / million).toLocaleString("en-US", {
+            maximumFractionDigits: 1,
+          }) + "M"
+        );
+      } else if (Math.abs(value) >= thousand) {
+        return (
+          (value / thousand).toLocaleString("en-US", {
+            maximumFractionDigits: 1,
+          }) + "K"
+        );
+      } else {
+        return this.formatCurrency(value);
+      }
+    },
+    translateLanguage(languageCode) {
+      const languageTranslations = {
+        en: "Inglês",
+        pt: "Português",
+        jp: "Japonês",
+        fr: "Francês",
+        de: "Alemão",
+        it: "Italiano",
+        ru: "Russo",
+        es: "Espanhol",
+        zh: "Chinês",
+        ko: "Coreano",
+        hi: "Hindi",
+        ar: "Árabe",
+        tr: "Turco",
+        sv: "Sueco",
+        nl: "Holandês",
+        fa: "Persa",
+        da: "Dinamarquês",
+        he: "Hebraico",
+        pl: "Polonês",
+        th: "Tailandês",
+        cs: "Tcheco",
+        el: "Grego",
+        hu: "Húngaro",
+      };
+      return languageTranslations[languageCode] || languageCode;
+    },
+    translateStatus(status) {
+      // Lógica de tradução de status, substitua pelo necessário
+      const statusTranslations = {
+        Released: "Lançado",
+        Rumored: "Rumor",
+        PostProduction: "Pós-produção",
+        Planned: "Planejado",
+        InProduction: "Em produção",
+        Canceled: "Cancelado",
+        "": "Desconhecido",
+
+        // Adicione mais traduções conforme necessário
+      };
+      return statusTranslations[status] || status;
     },
   },
 };
@@ -425,12 +484,6 @@ export default {
   background: rgba(0, 0, 0, 0.5);
 }
 .transparent-card-light {
-  background: rgba(255, 255, 255, 0.5);
-}
-.transparent-itens {
-  background: rgba(35, 34, 37, 0.6);
-}
-.transparent-iens-light {
   background: rgba(255, 255, 255, 0.5);
 }
 .align-right {

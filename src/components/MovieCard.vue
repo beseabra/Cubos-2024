@@ -2,15 +2,13 @@
   <v-hover v-slot="{ hover }" open-delay="200">
     <div
       :elevation="hover ? 12 : 2"
-      max-width="270"
-      max-height="340"
-      class="mx-auto"
+      class="movie-card"
       outlined
       style="position: relative"
     >
       <router-link :to="`/movie/${movie.id}`">
         <div style="position: relative">
-          <v-img max-height="550">
+          <v-img>
             <img
               :src="podtPath"
               :alt="movie.title"
@@ -23,7 +21,9 @@
               :style="{ height: hover ? '100px' : '80px' }"
             >
               <v-card-title>
-                <div class="headline">{{ movie.title }}</div>
+                <div class="subtitle" style="font-size: 18px">
+                  {{ truncatedTitle }}
+                </div>
               </v-card-title>
               <v-card-text>
                 <div class="body-2" :style="{ opacity: hover ? 1 : 0 }">
@@ -80,6 +80,14 @@ export default {
     isDesktop() {
       return window.innerWidth >= 1024;
     },
+    truncatedTitle() {
+      const maxWords = 3; // Defina o número máximo de palavras desejado
+      const words = this.movie.title.split(" ");
+      if (words.length > maxWords) {
+        return words.slice(0, maxWords).join(" ") + "...";
+      }
+      return this.movie.title;
+    },
   },
   methods: {
     genretypeName(genreId) {
@@ -100,10 +108,12 @@ export default {
 </script>
 
 <style scoped>
-.card-container {
+.movie-card {
+  max-width: 270px;
+  max-height: 500px;
+  width: 100%;
   overflow: hidden;
 }
-
 .card-title-container {
   transition: transform 0.3s;
   background: linear-gradient(
